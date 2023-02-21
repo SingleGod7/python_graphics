@@ -88,6 +88,7 @@ class Model:
         self.texcoord = []
         self.face = []
         self.material = None
+        self.scala = 1.0
 
         with open(filepath, "r") as f:
             for line in f:
@@ -96,6 +97,8 @@ class Model:
                     continue
                 elif(line[0] == "v"):
                     x, y, z = [float(x) for x in line[1:]]
+                    max_num = max(abs(x), max(abs(y), abs(z)))
+                    self.scala = max_num if max_num > self.scala else self.scala
                     self.vertex.append((x, y, z))
                 elif(line[0]  == "vt"):
                     x, y = [float(x) for x in line[1:]]
@@ -126,4 +129,3 @@ class Model:
     def get_normal(self, f):
         x, y, z = [f[i][2] for i in range(3)]
         return (self.texcoord[x], self.texcoord[y], self.texcoord[z])
-        
