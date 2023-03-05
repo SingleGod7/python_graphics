@@ -1,9 +1,9 @@
 # Graphics algorithm in python
 This repository aims to implement the graphics algorithm using python jupyter notebook.
 
-First of all, I want to implement a rasterization like [tinyrender](https://github.com/ssloy/tinyrenderer).
+First of all, I want to implement a rasterization render like [tinyrender](https://github.com/ssloy/tinyrenderer).
 
-- [line algorithm](./Lesson1-Bresenham's_line_drawing_algorithm.ipynb)
+- [line algorithm](./rasterization/Lesson1-Bresenham's_line_drawing_algorithm.ipynb)
 - triangle rasterization
 - hidden faces removal
 - perspective projection

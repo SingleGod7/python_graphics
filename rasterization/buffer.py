@@ -69,4 +69,23 @@ class FrameBuffer(Buffer):
             filepath += '@{}-{}-{}-{}-{}-{}'.format(t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
             filepath += '.ppm'
         self.buffer.save(filepath)
-            
+
+    def draw_line(self, start, end, color = (0, 0, 0), reverse=False):
+        x0, y0 = start
+        x1, y1 = end
+        if(x0 > x1):
+            return self.draw_line(end, start, color, reverse)
+        if(x1 == x0):
+            self.draw_point(start)
+            return
+        if abs(x1 - x0) < abs(y1 - y0):
+            return self.draw_line((y0, x0), (y1, x1), color, True)
+        dt = (y1 - y0) / (x1 - x0)
+        if reverse:
+            for i in range(round(x0), round(x1) + 1):
+                y0 += dt
+                self.draw_point((y0, i), color)
+        else:
+            for i in range(round(x0), round(x1) + 1):
+                y0 += dt
+                self.draw_point((i, y0), color)        

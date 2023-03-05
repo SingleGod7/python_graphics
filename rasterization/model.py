@@ -1,4 +1,5 @@
 from PIL import Image
+from math import ceil
 
 class Materals:
     def __init__(self, filepath):
@@ -48,7 +49,7 @@ class Materals:
                 # 忽略其他不支持的属性
                     pass 
     
-    def use_materal(self, name):
+    def use_materal(self, name): 
         if(name in self.materials.keys):
             self.materials_in_use = self.materials[name]
             if("ambient_texture" in self.materials_in_use.keys):
@@ -88,17 +89,23 @@ class Model:
         self.texcoord = []
         self.face = []
         self.material = None
+        self.material_list = []
+        self.group = []
         self.scala = 1.0
 
         with open(filepath, "r") as f:
+            sum_x = 0
+            sum_y = 0
+            sum_z = 0
             for line in f:
                 line = line.split()
                 if(len(line) == 0):
                     continue
                 elif(line[0] == "v"):
                     x, y, z = [float(x) for x in line[1:]]
-                    max_num = max(abs(x), max(abs(y), abs(z)))
-                    self.scala = max_num if max_num > self.scala else self.scala
+                    sum_x += x
+                    sum_y += y
+                    sum_z += z
                     self.vertex.append((x, y, z))
                 elif(line[0]  == "vt"):
                     x, y = [float(x) for x in line[1:]]
@@ -117,6 +124,22 @@ class Model:
                     a[-1] = line[1]
                     a = "/".join(a)
                     self.material = Materals(a)
+                elif(line[0] == "usemtl"):
+                    if(self.material == None):
+                        print("no materials find!")
+                    else:
+                        self.material_list.append(line[1])
+                        self.group.append(len(self.face))
+            aver_x = sum_x / len(self.vertex)
+            aver_y = sum_y / len(self.vertex)
+            aver_z = sum_z / len(self.vertex)
+            aver = (aver_x, aver_y, aver_z)
+            for i in range(len(self.vertex)):
+                self.vertex[i] = tuple(self.vertex[i][j] - aver[j] for j in range(3))
+                x, y, z = self.vertex[i]
+                max_num = max(abs(x), max(abs(y), abs(z)))
+                self.scala = max_num if max_num > self.scala else self.scala
+            self.scala = ceil(self.scala)
 
     def get_vertex(self, f):
         x, y, z = [f[i][0] for i in range(3)]
