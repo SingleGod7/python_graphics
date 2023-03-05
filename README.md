@@ -4,7 +4,7 @@ This repository aims to implement the graphics algorithm using python jupyter no
 First of all, I want to implement a rasterization render like [tinyrender](https://github.com/ssloy/tinyrenderer).
 
 - [line algorithm](./rasterization/Lesson1-Bresenham's_line_drawing_algorithm.ipynb)
-- triangle rasterization
+- [triangle rasterization](rasterization/Lesson2-fill_the_triangle.ipynb)
 - hidden faces removal
 - perspective projection
 - moving camera
